@@ -1,37 +1,52 @@
-import {useDispatch, useSelector} from "react-redux";
-import {catsThunk} from "../../redux/thunks/catsThunk";
-import {catsSelector} from "../../redux/slices/catsSlices";
-import {isLoadingCats} from "../../redux/slices/catsSlices";
+import { useDispatch, useSelector } from "react-redux";
+import { useOnMount } from '../../hooks/useOnMount';
+import { catsThunk } from "../../redux/thunks/catsThunk";
+import {
+  catNameSelector,
+  catUrlSelector, removeCatData,
+  setCatData
+} from "../../redux/slices/catsSlices";
+import { isLoadingCats } from "../../redux/slices/catsSlices";
+
+const catData = {
+  name: "Tom",
+  url: "https://img.freepik.com/free-photo/cute-domestic-kitten-sits-window-staring-outside-generative-ai_188544-12519.jpg"
+};
+
 const Cats = () => {
-    const dispatch = useDispatch();
-    const useSelect = useSelector(catsSelector);
-    // const useSelectUrl = useSelector(catsSelectorUrl);
-    const isLoading = useSelector(isLoadingCats);
+  const dispatch = useDispatch();
+  const name = useSelector(catNameSelector);
+  const url = useSelector(catUrlSelector);
+  // const useSelectUrl = useSelector(catsSelectorUrl);
+  const isLoading = useSelector(isLoadingCats);
 
-     const clickHandler = ()=> {
-        dispatch(catsThunk());
+  // const clickHandler = () => {
+  //   dispatch(catsThunk());
+  // };
 
-    }
+  useOnMount(() => {
+    console.log('mounted');
+  })
 
-    return(
-        <div className="image-content">
+  const clickHandler = () => {
+    dispatch(setCatData(catData));
+  };
 
+  const removeCat = () => {
+    dispatch(removeCatData())
+  };
 
-            {  isLoading ?
-                <>
-                <p>Loading...</p>
-                </>
+  return (
+    <div className="image-content">
+      <>
+        {isLoading && <p>Loading...</p>}
+        <p>{name}</p>
+        <img src={url} alt="" />
+        <button onClick={clickHandler}>Add cat image</button>
+        <button onClick={removeCat}>Remove cat image</button>
+      </>
+    </div>
 
-        :
-                <>
-                <p>{useSelect.name}</p>
-                 <img src={useSelect.url} alt=""/>
-                <button onClick={() => clickHandler()}>Add cat image</button>
-                </>
-
-    }
-        </div>
-
-    )
-}
-export default Cats
+  );
+};
+export default Cats;
