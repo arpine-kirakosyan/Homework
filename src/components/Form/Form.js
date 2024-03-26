@@ -1,25 +1,53 @@
-import { useState, memo, useRef } from "react";
-import { useTodoContext } from "../../context/todoContext";
-import { useOnMount } from '../../hooks/useOnMount';
-import { useOutsideClick } from '../../hooks/useOutsideClick';
+import { useForm } from 'react-hook-form';
 
 const Form = () => {
-  const [id, setId] = useState("");
-  const [text, setText] = useState("");
-
-  const textRef = useRef();
-
-  const setOutsideClick = useOutsideClick(() => setText('clicked outside'));
-
-  useOnMount(() => {
-    setOutsideClick(textRef.current);
+  const { register, getValues, handleSubmit, formState: { errors }, reset, watch } = useForm({
+    defaultValues: {
+      id: '',
+      text: '',
+    }
   });
+
+  console.log('errors', errors);
+
+
+
+  const handleTextChange = (e) => {
+    console.log('==-->>', e.target.value);
+  };
+
+  const onSubmit = data => {
+    console.log(data);
+  }
+
+  const resetFormValues = () => {
+    console.log(watch('text'));
+
+    reset({
+      id: '',
+      text: 'reset',
+    })
+  }
 
   return (
     <>
-      <form>
-        <input value={id} onChange={(e) => setId(e.target.value)} type="number" />
-        <input ref={textRef} value={text} onChange={(e) => setText(e.target.value)} type="text" />
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <input
+          style={errors.id ? { border: '1px solid red' } : {}}
+          {...register('id', {
+            required: 'Required'
+          })}
+          type="number"
+        />
+        <input
+          {...register('text', {
+            onChange: handleTextChange
+          })}
+          placeholder={'--------'}
+          type="text"
+        />
+        <button type='submit'>Submit</button>
+        <button type='button' onClick={resetFormValues}>Reset</button>
       </form>
     </>
   );
