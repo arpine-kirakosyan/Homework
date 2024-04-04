@@ -2,6 +2,7 @@ import Input from '@mui/material/Input';
 import { Controller } from 'react-hook-form';
 
 const FormInput = ({
+  name,
   max,
   type = "text",
   control,
@@ -10,11 +11,10 @@ const FormInput = ({
   pattern,
   required,
   placeholder
-
 }) => {
   return <Controller
-    name="age"
-    rules={{ maxLength, max, pattern }}
+    name={name}
+    rules={{ maxLength, max, pattern, required }}
     control={control}
     render={({ formState: { errors }, field: { onChange, ref, value, name } }) => {
 
@@ -25,13 +25,9 @@ const FormInput = ({
         aria-errormessage={"asasss"}
         required={required}
         placeholder={placeholder}
-        onChange={(e) => {
-          console.log(value);
-          onChange(e);
-        }
-        } />;
+        onChange={onChange} />;
     }}
   />;
-
 };
+
 export default FormInput;

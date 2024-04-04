@@ -12,7 +12,7 @@ const fakeUserApi = async () => {
 };
 
 export const catsThunk = createAsyncThunk(
-  'cats/thunk',
+  'todos/thunk',
   async () => await fakeUserApi()
 );
 

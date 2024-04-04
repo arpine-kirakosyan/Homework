@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
+import { useGetTodosQuery } from '../../api/RTK/todos';
 import { useOnMount } from '../../hooks/useOnMount';
 import { catsThunk } from "../../redux/thunks/catsThunk";
 import {
@@ -23,6 +24,12 @@ const Cats = () => {
   // const clickHandler = () => {
   //   dispatch(catsThunk());
   // };
+
+  const { data, isLoading: areTodosLoading, error } = useGetTodosQuery()
+
+  console.log('isLoading', areTodosLoading);
+  console.log('data', data);
+  console.log('error', error);
 
   useOnMount(() => {
     console.log('mounted');

@@ -1,37 +1,80 @@
+import { useState } from 'react';
+import DateRangePicker from 'react-date-range/dist/components/DateRangePicker';
 import { useForm } from "react-hook-form";
+import { Controller } from 'react-hook-form';
 import { useNavigate } from "react-router-dom";
+
 import FormInput from '../../components/FormComponent/FormInput';
 
 import "./index.css";
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
 
 const Auth = () => {
-
   const navigate = useNavigate();
+  const [startDate, setStartDate] = useState(new Date());
 
-  const { register, handleSubmit, control, formState: { errors }, name } = useForm({
+  const { handleSubmit, control } = useForm({
     defaultValues: {
       id: "",
       name: "",
-      age: null
+      age: null,
+      range: {
+       selection: {
+         key: 'selection',
+         startDate: '',
+         endDate: ''
+       }
+      }
     },
     mode: "onChange"
   });
 
-  const onSubmit = () => {
-    navigate("/");
+  const onSubmit = (data) => {
+    // navigate("/");
+    console.log('data, ', data);
   };
 
-  return (
-    <form onSubmit={handleSubmit(onSubmit)} className="auth-form">
+  const selectionRange = {
+    startDate: new Date(),
+    endDate: new Date(),
+    key: 'selection',
+  }
 
-      <FormInput control={control} type="text" placeholder="Name" required />
-      <FormInput control={control} type="number" pattern={/(([+374]{4}|[0]{1}))?([1-9]{2})(\d{6}) /}
+  return (
+    <form noValidate onSubmit={handleSubmit(onSubmit)} className="auth-form">
+      <FormInput name={'name'} control={control} type="text" placeholder="Name" required />
+      <FormInput name={'phone'} control={control} type="number"
                  placeholder="Phone number" required />
-      <FormInput control={control} type="email" pattern={/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/} placeholder="Email"
+      <FormInput name={'email'} control={control} type="email" pattern={/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/} placeholder="Email"
                  required />
-      <FormInput control={control} type="checkbox" required />
+      <FormInput name={'check'} control={control} type="checkbox" required />
       <button>Submit</button>
-      {/*<Button variant="contained" >Contained</Button>*/}
+
+      <Controller
+        name='range'
+        control={control}
+        render={({field: { onChange, ref, value}}) => {
+
+          return (
+            <DateRangePicker
+              ref={ref}
+              ranges={[value.selection]}
+              onChange={e => {
+                onChange({
+                  selection: {
+                    key: e.selection.key,
+                    startDate: e.selection.startDate,
+                    endDate: e.selection.endDate
+                  }
+                })
+              }}
+            />
+          )
+        }}
+      />
+
+        {/*<Button variant="contained" >Contained</Button>*/}
       {/*<input type="text"*/}
       {/*  {...register("id",{*/}
       {/*    required: 'Required'*/}

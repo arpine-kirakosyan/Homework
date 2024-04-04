@@ -18,7 +18,7 @@ const MAIN_ROUTS = [
         element: <App />
       },
       {
-        path: "/cats",
+        path: "/todos",
         element: <Cats />
       },
       {
