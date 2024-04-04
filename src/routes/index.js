@@ -3,6 +3,7 @@ import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 // import Cats from "../pages/Cats";
 import Layout from "../layouts";
+import Auth from '../pages/Auth';
 
 // const  App = lazy(() => import("../App"));
 const Cats = lazy(() => import("../pages/Cats"));
@@ -19,6 +20,10 @@ const MAIN_ROUTS = [
       {
         path: "/cats",
         element: <Cats />
+      },
+      {
+        path: "/auth",
+        element: <Auth />
       }
     ]
   },

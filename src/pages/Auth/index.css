@@ -1,0 +1,9 @@
+.auth-form {
+  max-width: 400px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.auth-form > div{
+  margin-bottom: 10px;
+}

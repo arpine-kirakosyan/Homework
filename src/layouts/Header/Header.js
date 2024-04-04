@@ -12,6 +12,8 @@ return (
                      to = {'/'}>Home</NavLink>
             <NavLink className={({ isActive, isPending }) =>
                 isPending ? "pending" : isActive ? "active" : ""} to = {'/cats'}>Cats</NavLink>
+              <NavLink className={({ isActive, isPending }) =>
+                isPending ? "pending" : isActive ? "active" : ""} to = {'/auth'}>Auth</NavLink>
 
         </div>
 
