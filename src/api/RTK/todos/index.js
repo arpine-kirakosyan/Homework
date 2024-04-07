@@ -7,7 +7,11 @@ export const todosApi = createApi({
   }),
   endpoints: builder => ({
     getTodos: builder.query({
-      query: () => `todos`,
+      query: (params) => ({
+        method: 'post',
+        url: `todos?${params}`,
+        body: { hello: true }
+      }),
     })
   })
 })

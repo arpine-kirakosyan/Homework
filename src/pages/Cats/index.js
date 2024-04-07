@@ -1,5 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useGetTodosQuery } from '../../api/RTK/todos';
+import { todosApi, useGetTodosQuery } from '../../api/RTK/todos';
+import { IMAGES } from '../../constants';
+import Loadable from '../../helpers/Loadable';
 import { useOnMount } from '../../hooks/useOnMount';
 import { catsThunk } from "../../redux/thunks/catsThunk";
 import {
@@ -8,6 +10,8 @@ import {
   setCatData
 } from "../../redux/slices/catsSlices";
 import { isLoadingCats } from "../../redux/slices/catsSlices";
+
+import './index.css';
 
 const catData = {
   name: "Tom",
@@ -25,7 +29,8 @@ const Cats = () => {
   //   dispatch(catsThunk());
   // };
 
-  const { data, isLoading: areTodosLoading, error } = useGetTodosQuery()
+  // const { data, isLoading: areTodosLoading, error } = useGetTodosQuery()
+  const { data, isLoading: areTodosLoading, error } = todosApi.endpoints.getTodos.useQuery('some_params');
 
   console.log('isLoading', areTodosLoading);
   console.log('data', data);
@@ -33,22 +38,33 @@ const Cats = () => {
 
   useOnMount(() => {
     console.log('mounted');
-  })
+  });
 
   const clickHandler = () => {
     dispatch(setCatData(catData));
   };
 
   const removeCat = () => {
-    dispatch(removeCatData())
+    dispatch(removeCatData());
   };
 
   return (
     <div className="image-content">
       <>
         {isLoading && <p>Loading...</p>}
-        <p>{name}</p>
-        <img src={url} alt="" />
+        {/*<p>{name}</p>*/}
+        {/*<img src={url} alt="" loading='lazy' />*/}
+
+        <div className="cats-container">
+          {
+            IMAGES.map((catUrl) => (
+              <div key={catUrl} className="cats-item">
+                <Loadable src={catUrl} />
+              </div>
+            ))
+          }
+        </div>
+
         <button onClick={clickHandler}>Add cat image</button>
         <button onClick={removeCat}>Remove cat image</button>
       </>
